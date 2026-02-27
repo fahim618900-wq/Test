@@ -51,7 +51,7 @@ nav.bottom-nav {
     height: 85px;
     background-color:#ffffff;
     display:flex;
-    justify-content: space-between; /* icons spread full width */
+    justify-content: space-between;
     align-items:center;
     padding: 0 12px;
     border-top:1px solid #eee;
@@ -85,7 +85,9 @@ nav.bottom-nav {
             <i class="far fa-bell"></i>
         </div>
     </div>
-    <div class="date-text">২৭ ফেব্রুয়ারি, ২০২৬</div>
+
+    <!-- Real-time Date -->
+    <div class="date-text" id="date-text"></div>
 
     <!-- Scenery -->
     <div class="scenery">
@@ -123,12 +125,21 @@ nav.bottom-nav {
 </div>
 
 <script>
+// বাস্তব তারিখ দেখানোর JS
+const dateText = document.getElementById('date-text');
+function updateDate() {
+    const now = new Date();
+    const options = { day: 'numeric', month: 'long', year: 'numeric' };
+    dateText.textContent = now.toLocaleDateString('bn-BD', options);
+}
+updateDate();
+
+// Nav item click instantly updates browser header & main card
 const themeMeta = document.getElementById('theme-color-meta');
 const header = document.getElementById('app-header');
 const mainCard = document.querySelector('.main-card');
 const navItems = document.querySelectorAll('.nav-item');
 
-// Nav item click instantly updates browser header & main card
 navItems.forEach(item=>{
     item.addEventListener('click', e=>{
         e.preventDefault();
