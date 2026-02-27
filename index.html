@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Islamic App UI Clone</title>
+<title>Islamic App UI Clone – Content Only</title>
 
-<!-- Browser header color for this page -->
+<!-- Browser header color -->
 <meta name="theme-color" content="#003d3d" id="theme-color-meta">
 
 <!-- Fonts & Icons -->
@@ -14,33 +14,19 @@
 
 <style>
 :root {
-    --bg-dark: #003d3d;
     --bg-light: #d8f3e5;
-    --accent-green: #2e7d32;
-    --text-white: #ffffff;
     --text-grey: #616161;
 }
 
 * { margin:0; padding:0; box-sizing:border-box; font-family:'Hind Siliguri', sans-serif; }
 
-body { background-color: var(--bg-dark); min-height:100vh; display:flex; justify-content:center; align-items:flex-start; }
+body { background-color: #003d3d; min-height:100vh; display:flex; justify-content:center; align-items:flex-start; }
 
-.app-container { width:100%; max-width:412px; min-height:100vh; background: linear-gradient(180deg, #003d3d 0%, #005a5a 40%); display:flex; flex-direction:column; overflow:hidden; padding-bottom:85px; }
+.app-container { width:100%; max-width:412px; min-height:100vh; display:flex; flex-direction:column; overflow:hidden; padding-bottom:85px; }
 
-header#app-header { opacity:0; height:0; overflow:hidden; background-color:#003d3d; }
+header#app-header { opacity:0; height:0; overflow:hidden; }
 
-.location-row { display:flex; justify-content:space-between; align-items:center; padding:16px 20px; color:var(--text-white); z-index:10; }
-.location-info { display:flex; align-items:center; gap:8px; }
-.location-info i { font-size:18px; }
-.location-text { font-size:18px; font-weight:500; }
-.header-icons { display:flex; gap:18px; font-size:20px; }
-.date-text { margin-top:4px; font-size:14px; opacity:0.9; padding-left:26px; }
-
-.scenery { position:relative; height:120px; width:100%; }
-.moon { position:absolute; right:120px; top:0; width:22px; height:22px; background:#fff; border-radius:50%; box-shadow:0 0 15px rgba(255,255,255,0.6); }
-.landscape-vector { position:absolute; bottom:0; width:100%; height:60px; background:rgba(0,0,0,0.1); mask-image:linear-gradient(to top, black, transparent); border-bottom:2px solid #00cccc22; }
-
-.main-card { flex-grow:1; background-color: var(--bg-light); border-top-left-radius:28px; border-top-right-radius:28px; margin-top:10px; box-shadow:0 -4px 10px rgba(0,0,0,0.1); transition: background-color 0.3s; }
+.main-card { flex-grow:1; background-color: var(--bg-light); border-radius:28px; margin:10px; box-shadow:0 4px 10px rgba(0,0,0,0.1); transition: background-color 0.3s; display:flex; justify-content:center; align-items:center; font-size:24px; color:#004d40; }
 
 nav.bottom-nav {
     position: fixed;
@@ -73,30 +59,8 @@ nav.bottom-nav {
     <!-- Invisible header for browser color -->
     <header id="app-header"></header>
 
-    <!-- Visible Header Section -->
-    <div class="location-row">
-        <div class="location-info">
-            <i class="fas fa-map-marker-alt"></i>
-            <span class="location-text">Mymensingh, Bangladesh</span>
-            <i class="fas fa-chevron-down" style="font-size:12px; margin-left:-2px;"></i>
-        </div>
-        <div class="header-icons">
-            <i class="fas fa-history"></i>
-            <i class="far fa-bell"></i>
-        </div>
-    </div>
-
-    <!-- Real-time Date -->
-    <div class="date-text" id="date-text"></div>
-
-    <!-- Scenery -->
-    <div class="scenery">
-        <div class="moon"></div>
-        <div class="landscape-vector"></div>
-    </div>
-
     <!-- Main Content Card -->
-    <main class="main-card"></main>
+    <main class="main-card">মুখ্য কন্টেন্ট এখানে</main>
 
     <!-- Bottom Navigation -->
     <nav class="bottom-nav">
@@ -125,16 +89,6 @@ nav.bottom-nav {
 </div>
 
 <script>
-// বাস্তব তারিখ দেখানোর JS
-const dateText = document.getElementById('date-text');
-function updateDate() {
-    const now = new Date();
-    const options = { day: 'numeric', month: 'long', year: 'numeric' };
-    dateText.textContent = now.toLocaleDateString('bn-BD', options);
-}
-updateDate();
-
-// Nav item click instantly updates browser header & main card
 const themeMeta = document.getElementById('theme-color-meta');
 const header = document.getElementById('app-header');
 const mainCard = document.querySelector('.main-card');
