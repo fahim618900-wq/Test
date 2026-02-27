@@ -3,83 +3,131 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Smooth Browser Header Color</title>
+<title>Islamic App UI Clone with Dynamic Browser Header</title>
 
+<!-- Theme Color Meta -->
 <meta name="theme-color" content="#003d3d" id="theme-color-meta">
 
-<style>
-  body {
-    margin:0;
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background:#eee;
-    font-family:sans-serif;
-    transition: background-color 1s;
-  }
+<!-- Fonts & Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-  /* Invisible header */
-  #app-header {
-    opacity:0;
+<style>
+:root {
+    --bg-dark: #003d3d;
+    --bg-light: #d8f3e5;
+    --accent-green: #2e7d32;
+    --nav-active: #c8e6c9;
+    --text-white: #ffffff;
+    --text-grey: #616161;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Hind Siliguri', sans-serif; }
+
+body { background-color: var(--bg-dark); height:100vh; display:flex; justify-content:center; align-items:center; }
+
+.app-container { width:100%; max-width:412px; height:100vh; background: linear-gradient(180deg, #003d3d 0%, #005a5a 40%); display:flex; flex-direction:column; overflow:hidden; }
+
+header#app-header {
+    opacity:0;      /* invisible */
     height:0;
     overflow:hidden;
     background-color:#003d3d;
-    transition: background-color 2s linear;
-  }
+    transition: background-color 0.5s;
+}
 
-  h1 { text-align:center; }
+.scenery { position:relative; height:120px; width:100%; }
+.moon { position:absolute; right:120px; top:0; width:22px; height:22px; background:#fff; border-radius:50%; box-shadow:0 0 15px rgba(255,255,255,0.6); }
+.landscape-vector { position:absolute; bottom:0; width:100%; height:60px; background:rgba(0,0,0,0.1); mask-image:linear-gradient(to top, black, transparent); border-bottom:2px solid #00cccc22; }
+
+.main-card { flex-grow:1; background-color: var(--bg-light); border-top-left-radius:28px; border-top-right-radius:28px; margin-top:10px; box-shadow:0 -4px 10px rgba(0,0,0,0.1); transition: background-color 0.5s; }
+
+nav.bottom-nav { height:85px; background-color:#ffffff; display:flex; justify-content:space-around; align-items:center; padding-bottom:10px; border-top:1px solid #eee; }
+.nav-item { display:flex; flex-direction:column; align-items:center; text-decoration:none; color:var(--text-grey); font-size:12px; font-weight:600; width:20%; }
+.nav-icon-box { width:56px; height:32px; display:flex; justify-content:center; align-items:center; border-radius:16px; margin-bottom:4px; transition:0.2s; }
+.nav-item.active .nav-icon-box { background-color:#cce7d5; color:#004d40; }
+.nav-item.active { color:#004d40; }
+.nav-icon-box i { font-size:18px; }
+.nav-label { margin-top:2px; }
+
+h1 { text-align:center; color:#fff; margin-top:20px; }
 </style>
 </head>
 <body>
 
-<header id="app-header"></header>
-<h1>Browser header color is smoothly changing 😎</h1>
+<div class="app-container">
+
+    <!-- Invisible header for browser color -->
+    <header id="app-header"></header>
+
+    <div class="scenery">
+        <div class="moon"></div>
+        <div class="landscape-vector"></div>
+    </div>
+
+    <main class="main-card"></main>
+
+    <nav class="bottom-nav">
+        <a href="#" class="nav-item active" data-header="#003d3d" data-card="#d8f3e5">
+            <div class="nav-icon-box"><i class="fas fa-home"></i></div>
+            <span class="nav-label">হোম</span>
+        </a>
+        <a href="#" class="nav-item" data-header="#2e7d32" data-card="#e8f5e9">
+            <div class="nav-icon-box"><i class="fas fa-th-large"></i></div>
+            <span class="nav-label">টুলস</span>
+        </a>
+        <a href="#" class="nav-item" data-header="#005a5a" data-card="#d0f0f0">
+            <div class="nav-icon-box"><i class="fas fa-book-open"></i></div>
+            <span class="nav-label">কুরআন</span>
+        </a>
+        <a href="#" class="nav-item" data-header="#009688" data-card="#b2dfdb">
+            <div class="nav-icon-box"><i class="fas fa-hands"></i></div>
+            <span class="nav-label">দোয়া</span>
+        </a>
+        <a href="#" class="nav-item" data-header="#004d40" data-card="#a7d7c5">
+            <div class="nav-icon-box"><i class="fas fa-user"></i></div>
+            <span class="nav-label">অন্যান্য</span>
+        </a>
+    </nav>
+
+</div>
+
+<h1>Browser header color is auto changing 😎</h1>
 
 <script>
 const themeMeta = document.getElementById('theme-color-meta');
 const header = document.getElementById('app-header');
+const navItems = document.querySelectorAll('.nav-item');
+const mainCard = document.querySelector('.main-card');
 
 // রঙের অ্যারে
 const colors = ['#003d3d','#2e7d32','#005a5a','#009688','#004d40','#f44336','#ff9800','#9c27b0'];
+let i = 0;
 
-// convert hex to rgb
-function hexToRgb(hex) {
-    hex = hex.replace('#','');
-    let bigint = parseInt(hex,16);
-    return [(bigint >> 16) & 255, (bigint >> 8) & 255, bigint & 255];
+// Step-by-step auto change function
+function autoChangeColor(){
+    const color = colors[i];
+    header.style.backgroundColor = color;       // invisible header
+    mainCard.style.backgroundColor = color.replace(/^#([0-9a-f]{6})$/i,"#$1"); // optional
+    themeMeta.setAttribute('content', color);   // browser header
+    i = (i+1) % colors.length;
 }
 
-// convert rgb to hex
-function rgbToHex(r,g,b){
-    return '#' + [r,g,b].map(x=>x.toString(16).padStart(2,'0')).join('');
-}
+// প্রতি 2 সেকেন্ডে auto change
+setInterval(autoChangeColor, 2000);
 
-// Smooth transition using requestAnimationFrame
-let currentColor = hexToRgb(colors[0]);
-let targetIndex = 1;
-
-function smoothStep(){
-    const targetColor = hexToRgb(colors[targetIndex]);
-    let done = true;
-    for(let i=0;i<3;i++){
-        if(Math.abs(currentColor[i]-targetColor[i])>0.5){
-            done = false;
-            currentColor[i] += (targetColor[i]-currentColor[i])*0.05; // speed factor
-        }
-    }
-    const hexColor = rgbToHex(...currentColor);
-    header.style.backgroundColor = hexColor;
-    themeMeta.setAttribute('content', hexColor);
-
-    if(done){
-        targetIndex = (targetIndex+1)%colors.length;
-    }
-    requestAnimationFrame(smoothStep);
-}
-
-// start smooth transition
-smoothStep();
+// Optional: click on nav changes color instantly
+navItems.forEach(item=>{
+    item.addEventListener('click', e=>{
+        e.preventDefault();
+        navItems.forEach(i=>i.classList.remove('active'));
+        item.classList.add('active');
+        const color = item.getAttribute('data-header');
+        header.style.backgroundColor = color;
+        mainCard.style.backgroundColor = item.getAttribute('data-card');
+        themeMeta.setAttribute('content', color);
+    });
+});
 </script>
 
 </body>
