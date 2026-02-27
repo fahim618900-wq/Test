@@ -3,9 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dynamic Browser Header</title>
+<title>Smooth Browser Header Color</title>
 
-<!-- Theme Color Meta -->
 <meta name="theme-color" content="#003d3d" id="theme-color-meta">
 
 <style>
@@ -17,15 +16,16 @@
     align-items:center;
     background:#eee;
     font-family:sans-serif;
+    transition: background-color 1s;
   }
 
-  /* Invisible web header */
+  /* Invisible header */
   #app-header {
     opacity:0;
     height:0;
     overflow:hidden;
-    background-color:#003d3d; /* initial color */
-    transition: background-color 0.5s;
+    background-color:#003d3d;
+    transition: background-color 2s linear;
   }
 
   h1 { text-align:center; }
@@ -34,29 +34,52 @@
 <body>
 
 <header id="app-header"></header>
-
-<h1>Browser header color is changing 😎</h1>
+<h1>Browser header color is smoothly changing 😎</h1>
 
 <script>
 const themeMeta = document.getElementById('theme-color-meta');
 const header = document.getElementById('app-header');
 
 // রঙের অ্যারে
-const colors = ['#003d3d', '#2e7d32', '#005a5a', '#009688', '#004d40', '#f44336', '#ff9800', '#9c27b0'];
+const colors = ['#003d3d','#2e7d32','#005a5a','#009688','#004d40','#f44336','#ff9800','#9c27b0'];
 
-// index keep track
-let i = 0;
-
-// ফাংশন: রঙ পরিবর্তন
-function changeHeaderColor() {
-    const color = colors[i];
-    header.style.backgroundColor = color;       // ওয়েব header color (invisible)
-    themeMeta.setAttribute('content', color);   // browser header color
-    i = (i + 1) % colors.length;
+// convert hex to rgb
+function hexToRgb(hex) {
+    hex = hex.replace('#','');
+    let bigint = parseInt(hex,16);
+    return [(bigint >> 16) & 255, (bigint >> 8) & 255, bigint & 255];
 }
 
-// প্রতি 2 সেকেন্ডে change
-setInterval(changeHeaderColor, 2000);
+// convert rgb to hex
+function rgbToHex(r,g,b){
+    return '#' + [r,g,b].map(x=>x.toString(16).padStart(2,'0')).join('');
+}
+
+// Smooth transition using requestAnimationFrame
+let currentColor = hexToRgb(colors[0]);
+let targetIndex = 1;
+
+function smoothStep(){
+    const targetColor = hexToRgb(colors[targetIndex]);
+    let done = true;
+    for(let i=0;i<3;i++){
+        if(Math.abs(currentColor[i]-targetColor[i])>0.5){
+            done = false;
+            currentColor[i] += (targetColor[i]-currentColor[i])*0.05; // speed factor
+        }
+    }
+    const hexColor = rgbToHex(...currentColor);
+    header.style.backgroundColor = hexColor;
+    themeMeta.setAttribute('content', hexColor);
+
+    if(done){
+        targetIndex = (targetIndex+1)%colors.length;
+    }
+    requestAnimationFrame(smoothStep);
+}
+
+// start smooth transition
+smoothStep();
 </script>
 
 </body>
