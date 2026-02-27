@@ -3,16 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Islamic App UI – হোম</title>
+<title>Islamic App UI Clone – হোম</title>
 
 <!-- Browser header color for this page -->
 <meta name="theme-color" content="#003d3d">
 
+<!-- Fonts & Icons -->
 <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
-/* Same CSS as Islamic App UI Clone */
 :root {
     --bg-dark: #003d3d;
     --bg-light: #d8f3e5;
@@ -23,24 +23,18 @@
 
 * { margin:0; padding:0; box-sizing:border-box; font-family:'Hind Siliguri', sans-serif; }
 
-body { background-color: var(--bg-dark); height:100vh; display:flex; justify-content:center; align-items:center; }
+body { background-color: var(--bg-dark); height:100vh; display:flex; justify-content:center; align-items:flex-start; }
 
-.app-container { width:100%; max-width:412px; height:100vh; background: linear-gradient(180deg, #003d3d 0%, #005a5a 40%); display:flex; flex-direction:column; overflow:hidden; }
+.app-container { width:100%; max-width:412px; min-height:100vh; background: linear-gradient(180deg, #003d3d 0%, #005a5a 40%); display:flex; flex-direction:column; overflow:hidden; padding-bottom:85px; /* bottom-nav height */ }
 
-.scenery { position:relative; height:120px; width:100%; }
-.moon { position:absolute; right:120px; top:0; width:22px; height:22px; background:#fff; border-radius:50%; box-shadow:0 0 15px rgba(255,255,255,0.6); }
-.landscape-vector { position:absolute; bottom:0; width:100%; height:60px; background:rgba(0,0,0,0.1); mask-image:linear-gradient(to top, black, transparent); border-bottom:2px solid #00cccc22; }
+header#app-header {
+    opacity:0;      /* invisible */
+    height:0;
+    overflow:hidden;
+    background-color:#003d3d;
+}
 
-.main-card { flex-grow:1; background-color: var(--bg-light); border-top-left-radius:28px; border-top-right-radius:28px; margin-top:10px; box-shadow:0 -4px 10px rgba(0,0,0,0.1); }
-
-nav.bottom-nav { height:85px; background-color:#ffffff; display:flex; justify-content:space-around; align-items:center; padding-bottom:10px; border-top:1px solid #eee; }
-.nav-item { display:flex; flex-direction:column; align-items:center; text-decoration:none; color:var(--text-grey); font-size:12px; font-weight:600; width:20%; }
-.nav-icon-box { width:56px; height:32px; display:flex; justify-content:center; align-items:center; border-radius:16px; margin-bottom:4px; }
-.nav-item.active .nav-icon-box { background-color:#cce7d5; color:#004d40; }
-.nav-item.active { color:#004d40; }
-.nav-icon-box i { font-size:18px; }
-.nav-label { margin-top:2px; }
-
+/* Visible Header Section */
 .location-row { display:flex; justify-content:space-between; align-items:center; padding:16px 20px; color:var(--text-white); z-index:10; }
 .location-info { display:flex; align-items:center; gap:8px; }
 .location-info i { font-size:18px; }
@@ -48,11 +42,46 @@ nav.bottom-nav { height:85px; background-color:#ffffff; display:flex; justify-co
 .header-icons { display:flex; gap:18px; font-size:20px; }
 .date-text { margin-top:4px; font-size:14px; opacity:0.9; padding-left:26px; }
 
+/* Scenery */
+.scenery { position:relative; height:120px; width:100%; }
+.moon { position:absolute; right:120px; top:0; width:22px; height:22px; background:#fff; border-radius:50%; box-shadow:0 0 15px rgba(255,255,255,0.6); }
+.landscape-vector { position:absolute; bottom:0; width:100%; height:60px; background:rgba(0,0,0,0.1); mask-image:linear-gradient(to top, black, transparent); border-bottom:2px solid #00cccc22; }
+
+/* Main Card */
+.main-card { flex-grow:1; background-color: var(--bg-light); border-top-left-radius:28px; border-top-right-radius:28px; margin-top:10px; box-shadow:0 -4px 10px rgba(0,0,0,0.1); }
+
+/* Bottom Navigation */
+nav.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    max-width: 412px;
+    height: 85px;
+    background-color:#ffffff;
+    display:flex;
+    justify-content:space-around;
+    align-items:center;
+    padding-bottom:10px;
+    border-top:1px solid #eee;
+    z-index: 100;
+}
+.nav-item { display:flex; flex-direction:column; align-items:center; text-decoration:none; color:var(--text-grey); font-size:12px; font-weight:600; width:20%; }
+.nav-icon-box { width:56px; height:32px; display:flex; justify-content:center; align-items:center; border-radius:16px; margin-bottom:4px; }
+.nav-item.active .nav-icon-box { background-color:#cce7d5; color:#004d40; }
+.nav-item.active { color:#004d40; }
+.nav-icon-box i { font-size:18px; }
+.nav-label { margin-top:2px; }
 </style>
 </head>
 <body>
 
 <div class="app-container">
+
+    <!-- Invisible header for browser color -->
+    <header id="app-header"></header>
+
+    <!-- Visible Header Section -->
     <div class="location-row">
         <div class="location-info">
             <i class="fas fa-map-marker-alt"></i>
@@ -66,13 +95,16 @@ nav.bottom-nav { height:85px; background-color:#ffffff; display:flex; justify-co
     </div>
     <div class="date-text">২৭ ফেব্রুয়ারি, ২০২৬</div>
 
+    <!-- Scenery -->
     <div class="scenery">
         <div class="moon"></div>
         <div class="landscape-vector"></div>
     </div>
 
+    <!-- Main Content Card -->
     <main class="main-card"></main>
 
+    <!-- Bottom Navigation -->
     <nav class="bottom-nav">
         <a href="#" class="nav-item active">
             <div class="nav-icon-box"><i class="fas fa-home"></i></div>
@@ -95,6 +127,7 @@ nav.bottom-nav { height:85px; background-color:#ffffff; display:flex; justify-co
             <span class="nav-label">অন্যান্য</span>
         </a>
     </nav>
+
 </div>
 
 </body>
