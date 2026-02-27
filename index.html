@@ -96,36 +96,38 @@ h1 { text-align:center; color:#fff; margin-top:20px; }
 
 <script>
 const themeMeta = document.getElementById('theme-color-meta');
-const header = document.getElementById('app-header');
-const navItems = document.querySelectorAll('.nav-item');
+const header = document.getElementById('app-header'); // invisible header
 const mainCard = document.querySelector('.main-card');
+const navItems = document.querySelectorAll('.nav-item');
 
-// রঙের অ্যারে
+// রঙের অ্যারে (step-by-step rotation)
 const colors = ['#003d3d','#2e7d32','#005a5a','#009688','#004d40','#f44336','#ff9800','#9c27b0'];
 let i = 0;
 
-// Step-by-step auto change function
-function autoChangeColor(){
+// Auto browser header color change function
+function autoChangeBrowserHeaderColor() {
     const color = colors[i];
-    header.style.backgroundColor = color;       // invisible header
-    mainCard.style.backgroundColor = color.replace(/^#([0-9a-f]{6})$/i,"#$1"); // optional
-    themeMeta.setAttribute('content', color);   // browser header
-    i = (i+1) % colors.length;
+    header.style.backgroundColor = color;       // invisible web header
+    mainCard.style.backgroundColor = color;     // optional: main card match
+    themeMeta.setAttribute('content', color);   // Chrome/Android browser header
+    i = (i + 1) % colors.length;
 }
 
 // প্রতি 2 সেকেন্ডে auto change
-setInterval(autoChangeColor, 2000);
+setInterval(autoChangeBrowserHeaderColor, 2000);
 
-// Optional: click on nav changes color instantly
+// Nav item click instantly updates browser header & main card
 navItems.forEach(item=>{
     item.addEventListener('click', e=>{
         e.preventDefault();
         navItems.forEach(i=>i.classList.remove('active'));
         item.classList.add('active');
-        const color = item.getAttribute('data-header');
-        header.style.backgroundColor = color;
-        mainCard.style.backgroundColor = item.getAttribute('data-card');
-        themeMeta.setAttribute('content', color);
+
+        const headerColor = item.getAttribute('data-header');
+        const cardColor = item.getAttribute('data-card');
+        header.style.backgroundColor = headerColor;
+        mainCard.style.backgroundColor = cardColor;
+        themeMeta.setAttribute('content', headerColor);
     });
 });
 </script>
