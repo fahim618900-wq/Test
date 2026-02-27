@@ -2,7 +2,7 @@
 <html lang="bn">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0, user-scalable=yes">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Islamic App UI Clone</title>
 
 <!-- Browser header color for this page -->
@@ -21,32 +21,14 @@
     --text-grey: #616161;
 }
 
-/* Reset */
 * { margin:0; padding:0; box-sizing:border-box; font-family:'Hind Siliguri', sans-serif; }
 
-html, body { 
-    width:100%; height:100%; 
-    touch-action: manipulation; 
-}
+body { background-color: var(--bg-dark); min-height:100vh; display:flex; justify-content:center; align-items:flex-start; }
 
-body { 
-    background-color: var(--bg-dark); 
-    min-height:100vh; 
-    display:flex; justify-content:center; align-items:flex-start; 
-    transform-origin: top left;
-}
+.app-container { width:100%; max-width:412px; min-height:100vh; background: linear-gradient(180deg, #003d3d 0%, #005a5a 40%); display:flex; flex-direction:column; overflow:hidden; padding-bottom:85px; }
 
-/* App Container */
-.app-container { 
-    width:100%; max-width:412px; min-height:100vh; 
-    background: linear-gradient(180deg, #003d3d 0%, #005a5a 40%); 
-    display:flex; flex-direction:column; overflow:hidden; padding-bottom:70px; 
-}
-
-/* Invisible header for browser color */
 header#app-header { opacity:0; height:0; overflow:hidden; background-color:#003d3d; }
 
-/* Visible header */
 .location-row { display:flex; justify-content:space-between; align-items:center; padding:16px 20px; color:var(--text-white); z-index:10; }
 .location-info { display:flex; align-items:center; gap:8px; }
 .location-info i { font-size:18px; }
@@ -54,33 +36,30 @@ header#app-header { opacity:0; height:0; overflow:hidden; background-color:#003d
 .header-icons { display:flex; gap:18px; font-size:20px; }
 .date-text { margin-top:4px; font-size:14px; opacity:0.9; padding-left:26px; }
 
-/* Scenery */
 .scenery { position:relative; height:120px; width:100%; }
 .moon { position:absolute; right:120px; top:0; width:22px; height:22px; background:#fff; border-radius:50%; box-shadow:0 0 15px rgba(255,255,255,0.6); }
 .landscape-vector { position:absolute; bottom:0; width:100%; height:60px; background:rgba(0,0,0,0.1); mask-image:linear-gradient(to top, black, transparent); border-bottom:2px solid #00cccc22; }
 
-/* Main Card */
 .main-card { flex-grow:1; background-color: var(--bg-light); border-top-left-radius:28px; border-top-right-radius:28px; margin-top:10px; box-shadow:0 -4px 10px rgba(0,0,0,0.1); transition: background-color 0.3s; }
 
-/* Bottom Navigation Fixed & Full Width */
 nav.bottom-nav {
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
     max-width: 412px;
-    height: 70px; /* চিকন করা হয়েছে */
+    height: 85px;
     background-color:#ffffff;
-    display: flex;
-    justify-content: space-between;
+    display:flex;
+    justify-content: space-between; /* icons spread full width */
     align-items:center;
-    padding: 0 15px; /* ডানদিক 3mm বাড়ানো */
+    padding: 0 12px;
     border-top:1px solid #eee;
     z-index:100;
 }
 
 .nav-item { display:flex; flex-direction:column; align-items:center; text-decoration:none; color:var(--text-grey); font-size:12px; font-weight:600; width:20%; }
-.nav-icon-box { width:50px; height:28px; display:flex; justify-content:center; align-items:center; border-radius:16px; margin-bottom:4px; transition:0.2s; }
+.nav-icon-box { width:56px; height:32px; display:flex; justify-content:center; align-items:center; border-radius:16px; margin-bottom:4px; transition:0.2s; }
 .nav-item.active .nav-icon-box { background-color:#cce7d5; color:#004d40; }
 .nav-item.active { color:#004d40; }
 .nav-icon-box i { font-size:18px; }
@@ -91,10 +70,10 @@ nav.bottom-nav {
 
 <div class="app-container">
 
-    <!-- Invisible header -->
+    <!-- Invisible header for browser color -->
     <header id="app-header"></header>
 
-    <!-- Visible Header -->
+    <!-- Visible Header Section -->
     <div class="location-row">
         <div class="location-info">
             <i class="fas fa-map-marker-alt"></i>
@@ -114,12 +93,12 @@ nav.bottom-nav {
         <div class="landscape-vector"></div>
     </div>
 
-    <!-- Main Card -->
+    <!-- Main Content Card -->
     <main class="main-card"></main>
 
     <!-- Bottom Navigation -->
     <nav class="bottom-nav">
-        <a href="#" class="nav-item" data-header="#003d3d" data-card="#d8f3e5">
+        <a href="#" class="nav-item active" data-header="#003d3d" data-card="#d8f3e5">
             <div class="nav-icon-box"><i class="fas fa-home"></i></div>
             <span class="nav-label">হোম</span>
         </a>
@@ -149,22 +128,13 @@ const header = document.getElementById('app-header');
 const mainCard = document.querySelector('.main-card');
 const navItems = document.querySelectorAll('.nav-item');
 
-// Initial: "টুলস" always active
-navItems[1].classList.add('active');
-
-// Nav click: update colors & active, but "টুলস" remains active
+// Nav item click instantly updates browser header & main card
 navItems.forEach(item=>{
     item.addEventListener('click', e=>{
         e.preventDefault();
-        // Remove active from all
         navItems.forEach(i=>i.classList.remove('active'));
-
-        // Set clicked active
         item.classList.add('active');
-        // Always keep Tools active
-        navItems[1].classList.add('active');
 
-        // Update header & card colors
         const headerColor = item.getAttribute('data-header');
         const cardColor = item.getAttribute('data-card');
         header.style.backgroundColor = headerColor;
@@ -172,14 +142,6 @@ navItems.forEach(item=>{
         themeMeta.setAttribute('content', headerColor);
     });
 });
-
-// Zoom-resilient: pinch / double-tap zoom doesn't change visual size
-function adjustZoom() {
-    const scale = window.visualViewport.scale;
-    document.body.style.transform = `scale(${1/scale})`;
-}
-window.visualViewport.addEventListener('resize', adjustZoom);
-window.addEventListener('load', adjustZoom);
 </script>
 
 </body>
