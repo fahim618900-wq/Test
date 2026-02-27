@@ -36,6 +36,7 @@ header#app-header {
     transition: background-color 0.5s;
 }
 
+/* UI Elements */
 .scenery { position:relative; height:120px; width:100%; }
 .moon { position:absolute; right:120px; top:0; width:22px; height:22px; background:#fff; border-radius:50%; box-shadow:0 0 15px rgba(255,255,255,0.6); }
 .landscape-vector { position:absolute; bottom:0; width:100%; height:60px; background:rgba(0,0,0,0.1); mask-image:linear-gradient(to top, black, transparent); border-bottom:2px solid #00cccc22; }
@@ -50,7 +51,12 @@ nav.bottom-nav { height:85px; background-color:#ffffff; display:flex; justify-co
 .nav-icon-box i { font-size:18px; }
 .nav-label { margin-top:2px; }
 
-h1 { text-align:center; color:#fff; margin-top:20px; }
+.location-row { display:flex; justify-content:space-between; align-items:center; padding:16px 20px; color:var(--text-white); z-index:10; }
+.location-info { display:flex; align-items:center; gap:8px; }
+.location-info i { font-size:18px; }
+.location-text { font-size:18px; font-weight:500; }
+.header-icons { display:flex; gap:18px; font-size:20px; }
+.date-text { margin-top:4px; font-size:14px; opacity:0.9; padding-left:26px; }
 </style>
 </head>
 <body>
@@ -60,13 +66,30 @@ h1 { text-align:center; color:#fff; margin-top:20px; }
     <!-- Invisible header for browser color -->
     <header id="app-header"></header>
 
+    <!-- Visible Header Section -->
+    <div class="location-row">
+        <div class="location-info">
+            <i class="fas fa-map-marker-alt"></i>
+            <span class="location-text">Mymensingh, Bangladesh</span>
+            <i class="fas fa-chevron-down" style="font-size:12px; margin-left:-2px;"></i>
+        </div>
+        <div class="header-icons">
+            <i class="fas fa-history"></i>
+            <i class="far fa-bell"></i>
+        </div>
+    </div>
+    <div class="date-text">২৭ ফেব্রুয়ারি, ২০২৬</div>
+
+    <!-- Scenery -->
     <div class="scenery">
         <div class="moon"></div>
         <div class="landscape-vector"></div>
     </div>
 
+    <!-- Main Content Card -->
     <main class="main-card"></main>
 
+    <!-- Bottom Navigation -->
     <nav class="bottom-nav">
         <a href="#" class="nav-item active" data-header="#003d3d" data-card="#d8f3e5">
             <div class="nav-icon-box"><i class="fas fa-home"></i></div>
@@ -92,8 +115,6 @@ h1 { text-align:center; color:#fff; margin-top:20px; }
 
 </div>
 
-<h1>Browser header color is auto changing 😎</h1>
-
 <script>
 const themeMeta = document.getElementById('theme-color-meta');
 const header = document.getElementById('app-header'); // invisible header
@@ -104,7 +125,7 @@ const navItems = document.querySelectorAll('.nav-item');
 const colors = ['#003d3d','#2e7d32','#005a5a','#009688','#004d40','#f44336','#ff9800','#9c27b0'];
 let i = 0;
 
-// Auto browser header color change function
+// Auto browser header color change
 function autoChangeBrowserHeaderColor() {
     const color = colors[i];
     header.style.backgroundColor = color;       // invisible web header
