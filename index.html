@@ -24,19 +24,18 @@ header#app-header { opacity:0; height:0; overflow:hidden; }
 nav.bottom-nav {
     position: fixed;
     bottom: 0;
-    left: 0;
-    width: 100%;
-    max-width: 412px;
-    height: 66px;
+    left: -5mm;           /* বাম পাশে ৫ মিমি বাড়ানো */
+    width: calc(100% + 10mm); /* ডান-বাম মোট ৫+৫ মিমি বাড়ানো */
+    max-width: none;      /* max-width না রাখলে সম্পূর্ণ বাড়ে */
+    height: 66px;         /* আগের মতো একই height */
     background-color:#ffffff;
     display:flex;
     justify-content: space-between;
     align-items:center;
-    padding: 0 19px;
+    padding: 0 15px;
     border-top:1px solid #eee;
-    z-index:100;
+    z-index:200;
 }
-
 .nav-item { display:flex; flex-direction:column; align-items:center; text-decoration:none; color:#616161; font-size:12px; font-weight:600; width:20%; }
 .nav-icon-box { width:56px; height:32px; display:flex; justify-content:center; align-items:center; border-radius:16px; margin-bottom:4px; transition:0.2s; }
 .nav-item.active .nav-icon-box { background-color:#cce7d5; color:#004d40; }
