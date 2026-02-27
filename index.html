@@ -69,12 +69,12 @@ nav.bottom-nav {
     left: 0;
     width: 100%;
     max-width: 412px;
-    height: 70px; /* চমকানো */
+    height: 70px; /* চিকন করা হয়েছে */
     background-color:#ffffff;
     display: flex;
     justify-content: space-between;
     align-items:center;
-    padding: 0 15px; /* ডান দিকে 3mm বাড়ানো */
+    padding: 0 15px; /* ডানদিক 3mm বাড়ানো */
     border-top:1px solid #eee;
     z-index:100;
 }
@@ -119,7 +119,7 @@ nav.bottom-nav {
 
     <!-- Bottom Navigation -->
     <nav class="bottom-nav">
-        <a href="#" class="nav-item active" data-header="#003d3d" data-card="#d8f3e5">
+        <a href="#" class="nav-item" data-header="#003d3d" data-card="#d8f3e5">
             <div class="nav-icon-box"><i class="fas fa-home"></i></div>
             <span class="nav-label">হোম</span>
         </a>
@@ -149,13 +149,22 @@ const header = document.getElementById('app-header');
 const mainCard = document.querySelector('.main-card');
 const navItems = document.querySelectorAll('.nav-item');
 
-// Nav click updates active, header color & card
+// Initial: "টুলস" always active
+navItems[1].classList.add('active');
+
+// Nav click: update colors & active, but "টুলস" remains active
 navItems.forEach(item=>{
     item.addEventListener('click', e=>{
         e.preventDefault();
+        // Remove active from all
         navItems.forEach(i=>i.classList.remove('active'));
-        item.classList.add('active');
 
+        // Set clicked active
+        item.classList.add('active');
+        // Always keep Tools active
+        navItems[1].classList.add('active');
+
+        // Update header & card colors
         const headerColor = item.getAttribute('data-header');
         const cardColor = item.getAttribute('data-card');
         header.style.backgroundColor = headerColor;
@@ -164,7 +173,7 @@ navItems.forEach(item=>{
     });
 });
 
-// Zoom-resilient content
+// Zoom-resilient: pinch / double-tap zoom doesn't change visual size
 function adjustZoom() {
     const scale = window.visualViewport.scale;
     document.body.style.transform = `scale(${1/scale})`;
