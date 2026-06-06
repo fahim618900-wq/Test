@@ -2,97 +2,96 @@
 <html lang="bn">
 <head>
 <meta charset="UTF-8">
+<title>Server Viewer</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Islamic App UI Clone – Empty Page</title>
-
-<!-- Browser header color -->
-<meta name="theme-color" content="#003d3d" id="theme-color-meta">
-
-<!-- Fonts & Icons -->
-<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
-* { margin:0; padding:0; box-sizing:border-box; font-family:'Hind Siliguri', sans-serif; }
+    body {
+        margin: 0;
+        font-family: Arial;
+        background: #0f172a;
+        color: white;
+        height: 100vh;
+        overflow: hidden;
+    }
 
-body { background-color: #003d3d; min-height:100vh; display:flex; justify-content:center; align-items:flex-start; }
+    #status {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+    }
 
-.app-container { width:100%; max-width:412px; min-height:100vh; display:flex; flex-direction:column; overflow:hidden; padding-bottom:85px; }
+    .error {
+        color: #ff4d4d;
+        font-size: 18px;
+    }
 
-header#app-header { opacity:0; height:0; overflow:hidden; }
+    iframe {
+        width: 100vw;
+        height: 100vh;
+        border: none;
+        display: none;
+    }
 
-nav.bottom-nav {
-    position: fixed;
-    bottom: 0;
-    left: -5mm;           /* বাম পাশে ৫ মিমি বাড়ানো */
-    width: calc(100% + 10mm); /* ডান-বাম মোট ৫+৫ মিমি বাড়ানো */
-    max-width: none;      /* max-width না রাখলে সম্পূর্ণ বাড়ে */
-    height: 66px;         /* আগের মতো একই height */
-    background-color:#ffffff;
-    display:flex;
-    justify-content: space-between;
-    align-items:center;
-    padding: 0 15px;
-    border-top:1px solid #eee;
-    z-index:200;
-}
-.nav-item { display:flex; flex-direction:column; align-items:center; text-decoration:none; color:#616161; font-size:12px; font-weight:600; width:20%; }
-.nav-icon-box { width:56px; height:32px; display:flex; justify-content:center; align-items:center; border-radius:16px; margin-bottom:4px; transition:0.2s; }
-.nav-item.active .nav-icon-box { background-color:#cce7d5; color:#004d40; }
-.nav-item.active { color:#004d40; }
-.nav-icon-box i { font-size:18px; }
-.nav-label { margin-top:2px; }
+    button {
+        margin-top: 10px;
+        padding: 10px 15px;
+        border: none;
+        background: #3b82f6;
+        color: white;
+        border-radius: 8px;
+        cursor: pointer;
+    }
 </style>
 </head>
+
 <body>
 
-<div class="app-container">
-
-    <!-- Invisible header for browser color -->
-    <header id="app-header"></header>
-
-    <!-- Bottom Navigation -->
-    <nav class="bottom-nav">
-        <a href="#" class="nav-item active" data-header="#003d3d">
-            <div class="nav-icon-box"><i class="fas fa-home"></i></div>
-            <span class="nav-label">হোম</span>
-        </a>
-        <a href="#" class="nav-item" data-header="#2e7d32">
-            <div class="nav-icon-box"><i class="fas fa-th-large"></i></div>
-            <span class="nav-label">টুলস</span>
-        </a>
-        <a href="#" class="nav-item" data-header="#005a5a">
-            <div class="nav-icon-box"><i class="fas fa-book-open"></i></div>
-            <span class="nav-label">কুরআন</span>
-        </a>
-        <a href="#" class="nav-item" data-header="#009688">
-            <div class="nav-icon-box"><i class="fas fa-hands"></i></div>
-            <span class="nav-label">দোয়া</span>
-        </a>
-        <a href="#" class="nav-item" data-header="#004d40">
-            <div class="nav-icon-box"><i class="fas fa-user"></i></div>
-            <span class="nav-label">অন্যান্য</span>
-        </a>
-    </nav>
-
+<div id="status">
+    <h3>🔄 সার্ভার চেক করা হচ্ছে...</h3>
 </div>
 
+<iframe id="frame"></iframe>
+
 <script>
-const themeMeta = document.getElementById('theme-color-meta');
-const header = document.getElementById('app-header');
-const navItems = document.querySelectorAll('.nav-item');
+const SERVER_URL = "http://192.168.0.104:5000";
 
-navItems.forEach(item=>{
-    item.addEventListener('click', e=>{
-        e.preventDefault();
-        navItems.forEach(i=>i.classList.remove('active'));
-        item.classList.add('active');
+async function checkServer() {
+    try {
+        // সার্ভার চলছে কিনা চেক
+        const res = await fetch(SERVER_URL, { method: "GET", mode: "no-cors" });
 
-        const headerColor = item.getAttribute('data-header');
-        header.style.backgroundColor = headerColor;
-        themeMeta.setAttribute('content', headerColor);
-    });
-});
+        // যদি ওপেন হয় → iframe দেখাও
+        openServer();
+
+    } catch (err) {
+        showError();
+    }
+
+    // no-cors এ error ধরা কঠিন, তাই timeout fallback
+    setTimeout(() => {
+        openServer();
+    }, 1500);
+}
+
+function openServer() {
+    document.getElementById("status").style.display = "none";
+    const frame = document.getElementById("frame");
+    frame.src = SERVER_URL;
+    frame.style.display = "block";
+}
+
+function showError() {
+    document.getElementById("status").innerHTML = `
+        <div class="error">❌ সার্ভার চালু নেই</div>
+        <p>192.168.0.104:5000 অন করো</p>
+        <button onclick="location.reload()">রিফ্রেশ</button>
+    `;
+}
+
+checkServer();
 </script>
 
 </body>
